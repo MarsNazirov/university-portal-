@@ -17,55 +17,28 @@
             <!-- Твои карточки -->
             <div class="row">
                 <!-- Факультет ИТ -->
+                @foreach($faculties as $faculty)
                 <div class="col-lg-4 col-md-6 col-12 mb-3">
                     <div class="card card-primary card-outline h-100">
                         <div class="card-header">
-                            <h5 class="card-title fw-bold">Факультет ИТ</h5>
+                            <h5 class="card-title fw-bold">{{ $faculty->title }}</h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Программирование, ИИ и безопасность.</p>
+                            <p class="card-text">{{ $faculty->description }}</p>
                             <ul class="list-unstyled mb-4">
-                                <li>👨‍🎓 Мест: <b>25</b></li>
-                                <li>⏳ Срок: <b>4 года</b></li>
+                                <li>👨‍🎓 Мест: <b>{{ $faculty->budget_places }}</b></li>
+                                <li>⏳ Срок: <b>{{ $faculty->education_years }}</b></li>
+                                <a href="{{ route('faculties.show', $faculty) }}" class="btn btn-primary w-100">
+                                Подробнее
+                            </a>
                             </ul>
-                            <button class="btn btn-primary w-100">Подать заявку</button>
+                            
+                            <a href="{{ route('applications.create', $faculty) }}" class="btn btn-primary w-100">Подать заявку</a>
                         </div>
+                        
                     </div>
                 </div>
-
-                <!-- Экономический -->
-                <div class="col-lg-4 col-md-6 col-12 mb-3">
-                    <div class="card card-success card-outline h-100">
-                        <div class="card-header">
-                            <h5 class="card-title fw-bold">Экономический</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Финансы, кредит, бухгалтерия.</p>
-                            <ul class="list-unstyled mb-4">
-                                <li>👨‍🎓 Мест: <b>15</b></li>
-                                <li>⏳ Срок: <b>4 года</b></li>
-                            </ul>
-                            <button class="btn btn-success w-100">Подать заявку</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Юридический -->
-                <div class="col-lg-4 col-md-6 col-12 mb-3">
-                    <div class="card card-warning card-outline h-100">
-                        <div class="card-header">
-                            <h5 class="card-title fw-bold">Юридический</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Право, суд, адвокатура.</p>
-                            <ul class="list-unstyled mb-4">
-                                <li>👨‍🎓 Мест: <b>10</b></li>
-                                <li>⏳ Срок: <b>5 лет</b></li>
-                            </ul>
-                            <button class="btn btn-warning w-100">Подать заявку</button>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div> 
             <!-- Конец карточек -->
 
