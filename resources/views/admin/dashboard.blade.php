@@ -1,5 +1,4 @@
 <x-layout>
-    <!-- 1. Заголовок страницы -->
     <div class="app-content-header">
         <div class="container-fluid">
             <div class="row">
@@ -10,11 +9,9 @@
         </div>
     </div>
 
-    <!-- 2. Основной контент -->
     <div class="app-content">
         <div class="container-fluid">
             
-            <!-- ВЕРХНИЙ РЯД: Виджеты (Статистика) -->
             <div class="row mb-4">
                 <div class="col-lg-3 col-6">
                     <div class="small-box text-bg-primary">
@@ -27,10 +24,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Можно добавить еще виджеты сюда -->
             </div>
 
-            <!-- НИЖНИЙ РЯД: Таблица -->
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -71,13 +66,41 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </td>
+                                            <td>
+                                                @if ($app->status !== 'approved')
+                                                    <form action="{{ route('applications.update', $app) }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="approved">
+                                                    <button type="submit" class="btn btn-sm btn-primary">Принять</button>
+                                                    </form>
+                                                @endif
+
+                                                @if ($app->status !== 'rejected')
+                                                    <form action="{{ route('applications.update', $app) }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="rejected">
+                                                    <button type="submit" class="btn btn-sm btn-danger">Отклонить</button>
+                                                    </form>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('applications.destroy', $app) }}" method="POST" onclick="confirm('Удалить?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-trash"></i> Удалить
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                        </div> <!-- /.card-body -->
+                        </div> 
                     
-                    </div> <!-- /.card -->
+                    </div> 
                 </div>
             </div>
             {{ $applications->links() }}
