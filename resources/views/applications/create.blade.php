@@ -21,28 +21,29 @@
                             </h3>
                         </div>
 
-                        <!-- Твой тег form пиши здесь -->
-                        <form>
-                            
-                            <!-- Не забудь защиту -->
-
+                        <form action="{{ route('applications.store', $faculty) }}" method="post">
+                        @csrf
                             <div class="card-body">
                                 
                                 <div class="mb-3">
                                     <label class="form-label">Ваши баллы ЕГЭ</label>
-                                    <input class="form-control">
+                                    <input name="score" class="form-control" required>
+                                    @error('score')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Мотивация</label>
-                                    <!-- Твой textarea для текста -->
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <textarea name="message" class="form-control" rows="3" required></textarea>
+                                    @error('message')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                             </div>
 
                             <div class="card-footer">
-                                <!-- Твоя кнопка -->
                                 <button class="btn btn-primary">Отправить</button>
                             </div>
 

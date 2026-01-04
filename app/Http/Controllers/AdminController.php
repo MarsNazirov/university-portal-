@@ -9,10 +9,12 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $applications = Application::with(['user', 'faculty'])->paginate(5);
+        $applications = Application::with(['user', 'faculty'])->latest()->paginate(5);
 
         return view('admin.dashboard', [
             'applications' => $applications
         ]);
     }
+
+    
 }
