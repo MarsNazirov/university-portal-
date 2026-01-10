@@ -5,10 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Application\ApplicationRequest;
 use App\Models\Application;
 use App\Models\Faculty;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
+    public function index()
+    {
+        $applications = Auth::user()
+            ->applications()
+            ->with('faculty')
+            ->latest()
+            ->get();
+        
+        return view('applications.index', [
+            'applications' => $applications
+        ]);
+    }
+
     public function create(Faculty $faculty)
     {
         return view('applications.create', [
@@ -21,7 +36,7 @@ class ApplicationController extends Controller
         $data = $request->validated();
 
         $faculty->applications()->create([
-            'user_id' => 2,
+            'user_id' => Auth::user()->id,
             'score' => $data['score'],
             'message' => $data['message']
         ]);
