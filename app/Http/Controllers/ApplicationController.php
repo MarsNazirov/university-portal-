@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Application\ApplicationRequest;
+use App\Jobs\SendEmail;
+use App\Jobs\SendTelegram;
+use App\Mail\ApplicationStatusMail;
 use App\Models\Application;
 use App\Models\Faculty;
-use App\Models\User;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ApplicationController extends Controller
 {
@@ -35,11 +39,13 @@ class ApplicationController extends Controller
     {
         $data = $request->validated();
 
-        $faculty->applications()->create([
+        $application = $faculty->applications()->create([
             'user_id' => Auth::user()->id,
             'score' => $data['score'],
             'message' => $data['message']
         ]);
+
+        SendTelegram::dispatch($application);
 
         return redirect()->route('home');
     }
@@ -58,6 +64,8 @@ class ApplicationController extends Controller
         $application->update([
             'status' => $status
         ]);
+
+        SendEmail::dispatch($application);
 
         return redirect()->back();
     }

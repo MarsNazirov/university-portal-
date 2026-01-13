@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Services\TelegramService;
 
 Route::get('/', [FacultyController::class, 'index'])->name('home');
 Route::get('/faculties/{faculty}/apply', [ApplicationController::class, 'create'])->name('applications.create');
