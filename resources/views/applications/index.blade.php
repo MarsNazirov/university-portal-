@@ -45,7 +45,7 @@
                                             @elseif($application->status == 'approved')
                                                 <span class="badge text-bg-success">Принята</span>
                                             @else
-                                                <span class="badge text-bg-dangers">Отклонена</span>
+                                                <span class="badge text-bg-danger">Отклонена</span>
                                             @endif
                                         </td>
                                     </tr>
