@@ -26,6 +26,28 @@
                 </div>
             </div>
 
+            <div class="row mb-4">
+                <form action="{{ route('admin.dashboard') }}" method="GET" class="d-flex gap-2 mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Имя студента" value="{{ request('search') }}">
+                    <select name="status" class="form-select">
+                            <option value="">Все статусы</option>
+                            <option value="new" @selected(request('status') == 'new')>Новая</option>
+                            <option value="approved" @selected(request('status') == 'approved')>Принята</option>
+                            <option value="rejected" @selected(request('status') == 'rejected')>Отклонена</option>
+                    </select>
+                    <select name="faculty_id" class="form-select">
+                        <option value="">Все факультеты</option>
+                        @foreach ($faculties as $faculty)
+                            <option value="{{ $faculty->id }}" @selected(request('faculty_id') == $faculty->id)>{{ $faculty->name }}</option>
+                        @endforeach
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Найти</button>
+
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">Сброс</a>
+                </form>
+            </div>
+
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
