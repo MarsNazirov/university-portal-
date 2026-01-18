@@ -21,10 +21,10 @@ Route::middleware(['auth', 'can:view-admin'])->group(function () {
 
 Route::get('/my-applications', [ApplicationController::class, 'index'])->name('applications.index')->middleware('auth');
 
-Route::get('/register', [RegisteredUserController::class, 'create'])->name('register.create');
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
 
-Route::get('/login', [SessionController::class, 'create'])->name('login.create');
+Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store'])->name('login.store');
 Route::post('/logout', [SessionController::class, 'logout'])->name('login.logout');
 

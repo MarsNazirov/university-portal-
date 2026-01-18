@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Application\ApplicationRequest;
 use App\Jobs\SendEmail;
-use App\Jobs\SendTelegram;
-use App\Mail\ApplicationStatusMail;
 use App\Models\Application;
 use App\Models\Faculty;
-use App\Services\TelegramService;
+use App\Services\ApplicationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class ApplicationController extends Controller
 {
@@ -35,17 +33,17 @@ class ApplicationController extends Controller
         ]);
     }
 
-    public function store(ApplicationRequest $request, Faculty $faculty)
+    public function store(ApplicationRequest $request, ApplicationService $service, Faculty $faculty )
     {
         $data = $request->validated();
 
-        $application = $faculty->applications()->create([
-            'user_id' => Auth::user()->id,
-            'score' => $data['score'],
-            'message' => $data['message']
-        ]);
+        try {
+            $service->createApplication($faculty, Auth::user()->id, $data);
+        } catch (\Exception $e) {
+            Log::error('Ошибка создания заявки: ' . $e->getMessage());
 
-        SendTelegram::dispatch($application);
+            return back()->with('error', 'Неудалось создать заявку. Попробуйте позже.');
+        }
 
         return redirect()->route('home');
     }

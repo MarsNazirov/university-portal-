@@ -6,10 +6,10 @@
             <ul class="navbar-nav ms-auto"> <!--begin::Navbar Search-->
                 @guest
                     <li class="nav-item">
-                        <a href="{{ route('login.create') }}" class="nav-link">Войти</a>
+                        <a href="{{ route('login') }}" class="nav-link">Войти</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('register.create') }}" class="nav-link">Регистрация</a>
+                        <a href="{{ route('register') }}" class="nav-link">Регистрация</a>
                     </li>
                 @endguest
                 @auth

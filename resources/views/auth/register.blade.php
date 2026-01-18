@@ -55,7 +55,7 @@
                         </div>
                     </form>
 
-                    <a href="{{ route('login.create') }}" class="text-center mt-3 d-block">У меня уже есть аккаунт</a>
+                    <a href="{{ route('login') }}" class="text-center mt-3 d-block">У меня уже есть аккаунт</a>
                 </div>
             </div>
         </div>
