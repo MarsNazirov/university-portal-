@@ -36,7 +36,7 @@
                     </form>
 
                     <p class="mb-0 mt-3 text-center">
-                        <a href="{{ route('register.create') }}" class="text-center">Регистрация</a>
+                        <a href="{{ route('register') }}" class="text-center">Регистрация</a>
                     </p>
                 </div>
             </div>
