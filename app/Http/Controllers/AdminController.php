@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Faculty;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -22,5 +23,14 @@ class AdminController extends Controller
             'faculties' => $faculties,
             'applications' => $applications,
         ]);
+    }
+
+    public function downloadPdf(Application $application)
+    {
+        $pdf = Pdf::loadView('pdf.enrollment', [
+            'application' => $application
+        ]);
+
+        return $pdf->download('order-' . $application->id . '.pdf');
     }
 }
