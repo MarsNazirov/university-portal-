@@ -56,7 +56,7 @@
                         </div>
                         
                         <div class="card-body p-0">
-                            <table class="table table-striped">
+                            <table class="table table-striped align-middle">
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
@@ -64,12 +64,13 @@
                                         <th>Факультет</th>
                                         <th>Баллы</th>
                                         <th>Статус</th>
-                                        <th>Действия</th>
+                                        <th class="text-end">Действия</th> <!-- ОДНА колонка для всех кнопок -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($applications as $app)
-                                        <tr class="align-middle">
+                                        <tr>
+                                            <!-- Данные (5 колонок) -->
                                             <td>{{ $app->id }}</td>
                                             <td>{{ $app->user->name }}</td>
                                             <td>{{ $app->faculty->name }}</td>
@@ -83,38 +84,56 @@
                                                     <span class="badge text-bg-danger">Отклонена</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-info text-white" title="Просмотр">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                @if ($app->status !== 'approved')
-                                                    <form action="{{ route('applications.update', $app) }}" method="post">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="status" value="approved">
-                                                    <button type="submit" class="btn btn-sm btn-primary">Принять</button>
-                                                    </form>
-                                                @endif
 
-                                                @if ($app->status !== 'rejected')
-                                                    <form action="{{ route('applications.update', $app) }}" method="post">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="status" value="rejected">
-                                                    <button type="submit" class="btn btn-sm btn-danger">Отклонить</button>
-                                                    </form>
-                                                @endif
-                                            </td>
                                             <td>
-                                                <form action="{{ route('applications.destroy', $app) }}" method="POST" onclick="confirm('Удалить?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i> Удалить
-                                                    </button>
-                                                </form>
+                                                <div class="d-flex gap-1 justify-content-end">
+
+                                                    {{-- СЦЕНАРИЙ 1: Заявка ПРИНЯТА --}}
+                                                    @if($app->status === 'approved')
+                                                        <a href="{{ route('admin.pdf', $app) }}" class="btn btn-sm btn-warning" target="_blank">
+                                                            Приказ PDF
+                                                        </a>
+                                                        
+                                                        {{-- Кнопка "Отозвать" (меняет статус на rejected) --}}
+                                                        <form action="{{ route('applications.update', $app) }}" method="post">
+                                                            @csrf @method('PATCH')
+                                                            <input type="hidden" name="status" value="rejected">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger">Отозвать</button>
+                                                        </form>
+
+                                                    {{-- СЦЕНАРИЙ 2: Заявка ОТКЛОНЕНА --}}
+                                                    @elseif($app->status === 'rejected')
+                                                        {{-- Кнопка "Восстановить" (меняет статус на approved) --}}
+                                                        <form action="{{ route('applications.update', $app) }}" method="post">
+                                                            @csrf @method('PATCH')
+                                                            <input type="hidden" name="status" value="approved">
+                                                            <button type="submit" class="btn btn-sm btn-outline-success">Восстановить</button>
+                                                        </form>
+
+                                                    {{-- СЦЕНАРИЙ 3: Заявка НОВАЯ --}}
+                                                    @else
+                                                        {{-- Принять --}}
+                                                        <form action="{{ route('applications.update', $app) }}" method="post">
+                                                            @csrf @method('PATCH')
+                                                            <input type="hidden" name="status" value="approved">
+                                                            <button type="submit" class="btn btn-sm btn-success">Принять</button>
+                                                        </form>
+
+                                                        {{-- Отклонить --}}
+                                                        <form action="{{ route('applications.update', $app) }}" method="post">
+                                                            @csrf @method('PATCH')
+                                                            <input type="hidden" name="status" value="rejected">
+                                                            <button type="submit" class="btn btn-sm btn-danger">Отклонить</button>
+                                                        </form>
+                                                    @endif
+
+                                                    {{-- Кнопка УДАЛИТЬ (Всегда видна) --}}
+                                                    <form action="{{ route('applications.destroy', $app) }}" method="POST" onsubmit="return confirm('Удалить?')">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-dark">Удалить</button>
+                                                    </form>
+
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

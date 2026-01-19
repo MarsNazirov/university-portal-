@@ -15,6 +15,7 @@ Route::get('/faculties/{faculty}', [FacultyController::class, 'show'])->name('fa
 
 Route::middleware(['auth', 'can:view-admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/applications/{application}/pdf', [AdminController::class, 'downloadPdf'])->name('admin.pdf');
     Route::patch('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 });
