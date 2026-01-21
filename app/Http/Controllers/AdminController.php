@@ -6,12 +6,17 @@ use App\Models\Application;
 use App\Models\Faculty;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        $faculties = Faculty::all();
+        // $faculties = Faculty::all();
+
+        $faculties = Cache::remember('faculties_list', 3600, function () {
+            return Faculty::all();
+        });
 
         $applications = Application::with(['user', 'faculty'])
                 ->filter($request->all())
