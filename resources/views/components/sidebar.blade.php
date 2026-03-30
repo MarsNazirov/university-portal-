@@ -6,17 +6,27 @@
         <nav class="mt-2"> <!--begin::Sidebar Menu-->
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="{{ route('home') }}" class="nav-link">
                         <i class="nav-icon fas fa-university"></i>
                         <p>Список факультетов</p>
                     </a>
                 </li>
+                @can('view-admin')
                 <li class="nav-item">
-                    <a href="/admin" class="nav-link">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-cogs"></i>
                         <p>Админка (Тест)</p>
                     </a>
                 </li>
+                @endcan
+                @auth
+                <li class="nav-item">
+                    <a href="{{ route('applications.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>Личный кабинет</p>
+                    </a>
+                </li> 
+                @endauth
             </ul> <!--end::Sidebar Menu-->
         </nav>
     </div> <!--end::Sidebar Wrapper-->

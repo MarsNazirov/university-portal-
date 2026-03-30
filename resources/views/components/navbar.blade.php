@@ -4,8 +4,27 @@
                 <li class="nav-item"> <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"> <i class="bi bi-list"></i> </a> </li>
             </ul> <!--end::Start Navbar Links--> <!--begin::End Navbar Links-->
             <ul class="navbar-nav ms-auto"> <!--begin::Navbar Search-->
-        
-                <li class="nav-item dropdown user-menu"> <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <img src="/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow" alt="User Image"> <span class="d-none d-md-inline">Гость</span> </a>
+                @guest
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="nav-link">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="nav-link">Регистрация</a>
+                    </li>
+                @endguest
+                @auth
+                    <li class="nav-item">
+                        <form action="{{ route('login.logout') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-primary">Выйти</button>
+                        </form>
+                    </li>
+                @endauth
+                    
+                <li class="nav-item dropdown user-menu"> 
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <img src="/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow" alt="User Image">
+                        <span class="d-none d-md-inline">Гость</span>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end"> <!--begin::User Image-->
                         <li class="user-header text-bg-primary"> <img src="../../dist/assets/img/user2-160x160.jpg" class="rounded-circle shadow" alt="User Image">
                             <p>
